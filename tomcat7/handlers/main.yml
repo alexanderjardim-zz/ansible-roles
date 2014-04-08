@@ -1,0 +1,4 @@
+---
+
+- name: "restart tomcat"
+  command: "{{tomcat.dir}}/{{tomcat.dist}}/tomcat.sh"

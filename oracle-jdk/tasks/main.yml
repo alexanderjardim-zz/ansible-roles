@@ -1,14 +1,17 @@
 ---
-- name: download Oracle JDK7
+- name: download Oracle JDK7 to host {{roles.downloadDir}}
   local_action: >
-    command wget -N -P roles/oracle-jdk7/files --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u51-b13/jdk-7u51-linux-x64.tar.gz
-    creates=roles/oracle-jdk7/files/jdk-7u51-linux-x64.tar.gz
+    command wget -N -P "{{roles.downloadDir}}" --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u51-b13/jdk-7u51-linux-x64.tar.gz
+    creates="{{roles.downloadDir}}/jdk-7u51-linux-x64.tar.gz"
 
 - name: "{{java.dir}} must exist"
   file: path={{java.dir}} state=directory
 
 - name: unpack Jdk7
-  unarchive: src=jdk-7u51-linux-x64.tar.gz dest={{java.dir}}
+  unarchive: 
+    src="jdk-7u51-linux-x64.tar.gz"
+    dest="{{java.dir}}"
+    creates="{{java.dir}}/{{java.dist}}"
 
 - name: setup JAVA_HOME
   lineinfile:

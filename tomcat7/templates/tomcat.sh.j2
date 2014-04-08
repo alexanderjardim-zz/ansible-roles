@@ -1,0 +1,7 @@
+#!/bin/bash
+
+pid=`ps -fe | grep '{{tomcat.dir}}' | grep -v grep | tr -s ' ' | cut -d " " -f2`
+if [ -n "$pid" ]; then 
+{{tomcat.dir}}/{{tomcat.dist}}/bin/shutdown.sh
+fi
+{{tomcat.dir}}/{{tomcat.dist}}/bin/startup.sh

@@ -1,0 +1,15 @@
+---
+- name: creates solr context at Tomcat
+  template:
+    src="tomcat7/solr.xml.j2"
+    dest={{tomcat.context}}/solr.xml
+
+- name: ensures Log4j.properties is present
+  template:
+    src="tomcat7/log4j.properties.j2"
+    dest="{{tomcat.dir}}/{{tomcat.dist}}/lib/log4j.properties"
+
+- name: copy external dependdencies to Tomcat "{{tomcat.dir}}/{{tomcat.dist}}/lib" dir
+  copy: 
+    src="{{roles.downloadDir}}/{{solr.dist}}/example/lib/ext/"
+    dest="{{tomcat.dir}}/{{tomcat.dist}}/lib/"

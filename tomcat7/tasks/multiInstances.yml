@@ -1,0 +1,36 @@
+---
+
+- name: ensures {{tomcat.dir}}/{{item[0].port}}/{{item[1]}} folder exists
+  file: 
+    path="{{tomcat.dir}}/{{item[0].port}}/{{item[1]}}"
+    state=directory
+  with_nested: 
+    - tomcat.instances
+    - [ 'bin', 'conf/Catalina/localhost', 'lib', 'logs', 'webapps', 'work', 'temp' ]
+
+- name: configures the setenv.sh script for {{item.port}}
+  template:
+    src=setenv.sh.j2
+    dest="{{tomcat.dir}}/{{item.port}}/bin/setenv.sh"
+    mode=0755
+  with_items: tomcat.instances
+
+- name: configures server.xml for {{item.port}}
+  template:
+    src=server.xml.j2
+    dest="{{tomcat.dir}}/{{item.port}}/conf/server.xml"
+  with_items: tomcat.instances
+
+- name: configures tomcat-users.xml for {{item.port}}
+  template:
+    src="tomcat-users.xml.j2"
+    dest="{{tomcat.dir}}/{{item.port}}/conf/tomcat-users.xml"
+  with_items: tomcat.instances
+
+- name: creates startup.sh for multiInstances
+  template:
+    src="startup.sh.j2"
+    dest="{{tomcat.dir}}/startup.sh"
+    mode=0755
+  notify:
+    - "restart tomcat"

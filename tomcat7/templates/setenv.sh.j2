@@ -1,0 +1,7 @@
+#!/bin/bash
+
+export JAVA_HOME="{{java.dir}}/{{java.dist}}"
+
+{% if tomcat.java_opts is defined %}
+JAVA_OPTS="{{ tomcat.java_opts }}"
+{% endif %}

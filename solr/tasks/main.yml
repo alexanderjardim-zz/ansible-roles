@@ -1,0 +1,41 @@
+---
+
+- name: download Solr to host {{roles.downloadDir}}
+  local_action: >
+    get_url 
+      url="https://archive.apache.org/dist/lucene/solr/{{solr.version}}/{{solr.package}}" 
+      dest="{{roles.downloadDir}}/{{solr.package}}"
+
+- name: unpack Solr to host
+  local_action: >
+    unarchive
+      src="{{roles.downloadDir}}/{{solr.package}}"
+      dest="{{roles.downloadDir}}/"
+      creates="{{roles.downloadDir}}/{{solr.dist}}"
+
+- name: ensures {{item}} directory exists
+  file: path={{item}} state=directory
+  with_items:
+    - "{{solr.dir}}/lib"
+
+- name: copies solr.war to {{solr.dir}}
+  copy:
+    src="{{roles.downloadDir}}/{{solr.dist}}/example/webapps/solr.war"
+    dest="{{solr.dir}}"
+
+- name: solr.xml
+  template:
+    src="solr.xml.j2"
+    dest="{{solr.dir}}/solr.xml"
+
+- name: ensures all needed Solr dist packages are present
+  copy:
+    src="{{roles.downloadDir}}/{{solr.dist}}/dist/{{item}}"
+    dest="{{solr.dir}}/lib/"
+  with_items:
+  - "solr-dataimporthandler-{{solr.version}}.jar"
+
+- include: coreConfig.yml
+
+- include: tomcat7.yml
+  when: solr.container == 'tomcat7'

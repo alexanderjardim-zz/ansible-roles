@@ -1,0 +1,15 @@
+---
+
+- name: ensures {{solr.dir}}/{{item[0]}}/{{item[1]}} exists
+  file: 
+    path="{{solr.dir}}/{{item[0]}}/{{item[1]}}"
+    state=directory
+  with_nested:
+    - solr.cores.names
+    - [ 'data', 'conf' ]
+
+- name: copies config files to {{solr.dir}}/{{item}}/conf
+  copy:
+    src="{{solr.localHome}}/{{item}}/conf/"
+    dest="{{solr.dir}}/{{item}}/conf/"
+  with_items: solr.cores.names
