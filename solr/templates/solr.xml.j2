@@ -2,6 +2,22 @@
 
 <solr persistent="false">
 
+  <!-- GLOBAL CONFIGS -->
+
+  <!-- COMMIT CONFIGS -->
+  <property name="commit.soft.interval" value="{{solr.softCommit | default(60000)}}" />
+  <property name="commit.hard.interval" value="{{solr.hardCommit | default(600000)}}" />
+
+  <!-- REPLICATION CONFIG -->
+  {% if solr.replication.mode == 'slave' %}
+  <property name="replication.slave" value="true" />
+  <property name="replication.slave.masterUrl" value="{{solr.replication.masterUrl}}"/>
+  <property name="replication.slave.pollInterval" value="{{solr.replication.pollInterval | default('00:11:00')}}" />
+  {% elif solr.replication.mode == 'master' %}
+  <property name="replication.master" value="true" />
+  <property name="replication.files" value="{{solr.replication.files | default('schema.xml')}}" />
+  {% endif %}
+
   <!--
   adminPath: RequestHandler path to manage cores.  
     If 'null' (or absent), cores will not be manageable via request handler
