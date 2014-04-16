@@ -1,3 +1,3 @@
 ---
 dependencies:
- - { role: "{{roles.dir}}/oracle-jdk"}
+ - { role: "oracle-jdk", tags: 'jdk' }

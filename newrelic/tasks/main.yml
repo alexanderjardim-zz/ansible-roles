@@ -1,0 +1,27 @@
+---
+
+- name: ensures New Relic folder exists
+  file:
+    path="{{newrelic.dir}}/{{newrelic.version}}"
+    state=directory
+    mode=0755
+
+- name: unpack New Relic
+  unarchive:
+    src="{{ downloadDir | default('/tmp') }}/newrelic_agent{{newrelic.version}}.zip"
+    dest="{{newrelic.dir}}/{{newrelic.version}}"
+    creates="{{newrelic.dir}}/{{newrelic.version}}/newrelic.jar"
+
+- name: moves New Relic content to its rightfull place
+  shell:
+    mv newrelic/* ./; rm -rf newrelic
+    chdir="{{newrelic.dir}}/{{newrelic.version}}"
+    creates="{{newrelic.dir}}/{{newrelic.version}}/newrelic.jar"
+
+- name: configures newrelic.yml
+  template:
+    src="newrelic.yml.j2"
+    dest="{{newrelic.dir}}/{{newrelic.version}}/newrelic.yml"
+
+- include: tomcat.yml
+  when: newrelic.container == 'tomcat'

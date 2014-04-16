@@ -1,4 +1,0 @@
----
-
-  solr:
-    package: "solr-{{solr.version}}.tgz"

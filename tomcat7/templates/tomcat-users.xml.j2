@@ -2,15 +2,9 @@
 
 <tomcat-users>
 
-
-  {% if item.users is defined %}
-    {% for user in item.users %}
+    {% for user in tomcat_users %}
       <role rolename="{{user.name}}"/>
-      <user username="{{user.name}}" password="{{user.password}}" roles="{% for role in user.roles %}{{ role }},{% endfor %}"/>
-    {% endfor %}  
-  {% else %}
-    <role rolename="tomcat"/>
-    <user username="tomcat" password="tomcat" roles="tomcat,manager-gui"/>
-  {% endif %}
+      <user username="{{user.name}}" password="{{user.password}}" roles="{{user.roles}}"/>
+    {% endfor %}
 
 </tomcat-users>

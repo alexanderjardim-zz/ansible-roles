@@ -1,0 +1,43 @@
+---
+
+#everything that will be downloaded will go here, so we don't need to download the same package over and over at each guest machine.
+#what about this default? I am a Mac user. What may I say?
+download_dir: '~/Downloads'
+
+# here, you put the value that would go at -Dsolr.solr.home
+#solr_dir: 
+
+solr_version: '4.4.0'
+
+solr_package: 'solr-4.4.0.tgz'
+
+solr_dist: 'solr-4.4.0'
+
+#this is the only container we support right now
+solr_container: 'tomcat7'
+
+#this is where you put your local solr configuration at your development machine
+solr_local_home: '../solrHome'
+
+# master, slave or repeater
+solr_replication_mode: 'slave'
+
+#soft commit interval in milisseconds
+solr_soft_commit: 60000
+
+#hard commit interval in milisseconds
+solr_hard_commit: 600000
+
+#there isn't a good defautl value for the master url, and you must configure it for your slaves instances
+#solr_replication_master_url
+
+#slave poll interval in HH:mm:ss
+solr_replication_poll_interval: '00:01:00'
+
+#config files wich solr master will replicate to slaves
+solr_replication_files: 'schema.xml'
+
+#here, you should list the name of your cores
+solr_core_names: ['collection1']
+
+solr_log_level: INFO

@@ -1,15 +1,28 @@
 ---
+
 - name: creates solr context at Tomcat
   template:
     src="tomcat7/solr.xml.j2"
-    dest={{tomcat.context}}/solr.xml
+    dest={{tomcat_context}}/solr.xml
+  notify:
+    - restart tomcat
+
+- name: ensures {{tomcat_dir}}/{{tomcat_dist}}/lib exists
+  file:
+    path="{{tomcat_dir}}/{{tomcat_dist}}/lib"
+    state=directory
+    mode=0750
 
 - name: ensures Log4j.properties is present
   template:
     src="tomcat7/log4j.properties.j2"
-    dest="{{tomcat.dir}}/{{tomcat.dist}}/lib/log4j.properties"
+    dest="{{tomcat_dir}}/{{tomcat_dist}}/lib/log4j.properties"
+  notify:
+    - restart tomcat
 
-- name: copy external dependdencies to Tomcat "{{tomcat.dir}}/{{tomcat.dist}}/lib" dir
+- name: copy external dependencies to Tomcat lib dir
   copy: 
-    src="{{roles.downloadDir}}/{{solr.dist}}/example/lib/ext/"
-    dest="{{tomcat.dir}}/{{tomcat.dist}}/lib/"
+    src="{{download_dir}}/{{solr_dist}}/example/lib/ext/"
+    dest="{{tomcat_dir}}/{{tomcat_dist}}/lib/"
+  notify:
+    - restart tomcat

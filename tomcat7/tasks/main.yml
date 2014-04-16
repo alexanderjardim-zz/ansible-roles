@@ -2,40 +2,55 @@
 - name: download Tomcat
   local_action: >
     get_url
-      url="http://ftp.unicamp.br/pub/apache/tomcat/tomcat-7/v{{tomcat.version}}/bin/{{tomcat.package}}"
-      dest="{{roles.downloadDir}}/{{tomcat.package}}"
+      url="http://ftp.unicamp.br/pub/apache/tomcat/tomcat-7/v{{tomcat_version}}/bin/{{tomcat_package}}"
+      dest="{{download_dir}}/{{tomcat_package}}"
 
-- name: ensures {{tomcat.dir}} exists
+- name: ensures {{tomcat_dir}} exists
   file:
-    path="{{tomcat.dir}}"
+    path="{{tomcat_dir}}"
     state=directory
 
 - name: unpack Tomcat
   unarchive:
-    src="{{roles.downloadDir}}/{{tomcat.package}}"
-    dest="{{tomcat.dir}}"
-    creates="{{tomcat.dir}}/{{tomcat.dist}}"
+    src="{{download_dir}}/{{tomcat_package}}"
+    dest="{{tomcat_dir}}"
+    creates="{{tomcat_dir}}/{{tomcat_dist}}"
 
 - name: ensures Tomcat context config folder exists
   file:
-    path="{{tomcat.dir}}/{{tomcat.dist}}/conf/Catalina/localhost"
+    path="{{tomcat_context}}"
     state=directory
 
 - name: configures server.xml
   template:
     src=server.xml.j2
-    dest="{{tomcat.dir}}/{{tomcat.dist}}/conf/server.xml"
+    dest="{{tomcat_dir}}/{{tomcat_dist}}/conf/server.xml"
 
 - name: configures tomcat-users.xml
   template:
     src="tomcat-users.xml.j2"
-    dest="{{tomcat.dir}}/{{tomcat.dist}}/conf/tomcat-users.xml"
+    dest="{{tomcat_dir}}/{{tomcat_dist}}/conf/tomcat-users.xml"
+
+- name: configures logging.properties
+  template:
+    src="logging.properties.j2"
+    dest="{{tomcat_dir}}/{{tomcat_dist}}/conf/logging.properties"
+
+- name: creates tomcat.sh
+  template:
+    src="tomcat.sh.j2"
+    dest="{{tomcat_dir}}/{{tomcat_dist}}/tomcat.sh"
+    mode=0700
+  notify:
+    - restart tomcat
 
 - name: configures the setenv.sh script
   template:
     src=setenv.sh.j2
-    dest="{{tomcat.dir}}/{{tomcat.dist}}/bin/setenv.sh"
+    dest="{{tomcat_dir}}/{{tomcat_dist}}/bin/setenv.sh"
     mode=0755
+  notify:
+  - restart tomcat
 
 #- include: multiInstances.yml
 #  when: tomcat.instances is defined

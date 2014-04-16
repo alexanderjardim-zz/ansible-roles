@@ -5,17 +5,17 @@
   <!-- GLOBAL CONFIGS -->
 
   <!-- COMMIT CONFIGS -->
-  <property name="commit.soft.interval" value="{{solr.softCommit | default(60000)}}" />
-  <property name="commit.hard.interval" value="{{solr.hardCommit | default(600000)}}" />
+  <property name="commit.soft.interval" value="{{solr_soft_commit}}" />
+  <property name="commit.hard.interval" value="{{solr_hard_commit}}" />
 
   <!-- REPLICATION CONFIG -->
-  {% if solr.replication.mode == 'slave' %}
+  {% if solr_replication_mode == 'slave' %}
   <property name="replication.slave" value="true" />
-  <property name="replication.slave.masterUrl" value="{{solr.replication.masterUrl}}"/>
-  <property name="replication.slave.pollInterval" value="{{solr.replication.pollInterval | default('00:11:00')}}" />
-  {% elif solr.replication.mode == 'master' %}
+  <property name="replication.slave.masterUrl" value="{{solr_replication_master_url}}"/>
+  <property name="replication.slave.pollInterval" value="{{solr_replication_poll_interval}}" />
+  {% elif solr_replication_mode == 'master' %}
   <property name="replication.master" value="true" />
-  <property name="replication.files" value="{{solr.replication.files | default('schema.xml')}}" />
+  <property name="replication.files" value="{{solr_replication_files}}" />
   {% endif %}
 
   <!--
@@ -23,7 +23,7 @@
     If 'null' (or absent), cores will not be manageable via request handler
   -->
   <cores adminPath="/admin/cores" host="${host:}" hostPort="${jetty.port:8983}" hostContext="${hostContext:solr}">
-    {% for core in solr.cores.names %}
+    {% for core in solr_core_names %}
     <core name="{{core}}" instanceDir="{{core}}" />
     {% endfor %}
     
