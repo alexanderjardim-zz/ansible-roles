@@ -15,3 +15,19 @@
     dest="{{solr_dir}}/{{item}}/conf/"
     mode=0600
   with_items: solr_core_names
+
+- name: ensures solrconfig.xml is generated based on {{solr_config_template_path}}
+  template:
+    src="{{solr_config_template_path}}"
+    dest="{{solr_dir}}/{{item}}/conf/solrconfig.xml"
+  with_items: solr_core_names
+  when: solr_config_template_path is defined
+
+- name: ensures {{solr_external_data_dir}}/{{item}} path is a directory if it is needed
+  file:
+    path="{{solr_external_data_dir}}/{{item}}"
+    state=directory
+    mode=0700
+  with_items:
+    - solr_core_names
+  when: solr_external_data_dir is defined

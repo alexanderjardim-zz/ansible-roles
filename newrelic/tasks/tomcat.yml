@@ -2,7 +2,7 @@
 
 - name: appends java agent do setenv.sh
   lineinfile:
-    dest="{{tomcat.dir}}/{{tomcat.dist}}/bin/setenv.sh"
+    dest="{{tomcat_dir}}/{{tomcat_dist}}/bin/setenv.sh"
     line='export JAVA_OPTS="$JAVA_OPTS -javaagent:{{newrelic.dir}}/{{newrelic.version}}/newrelic.jar"'
     state=present
     insertafter=EOF

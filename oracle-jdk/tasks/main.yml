@@ -7,11 +7,22 @@
 - name: "{{java_dir}} must exist"
   file: path={{java_dir}} state=directory
 
-- name: unpack Jdk7
+- name: verifies if {{java_dir}}/{{java_dist}}/bin/java exists
+  command: 
+    chdir="{{java_dir}}/{{java_dist}}/bin/"
+    ls java
+  register: java_exists
+  ignore_errors: true
+
+- name: DEBUG - prints registered java_exists value
+  command: "echo {{java_exists.stdout.find('java')}}"
+  tags: debug
+
+- name: unpacks Jdk7
   unarchive: 
     src="{{download_dir}}/jdk-7u51-linux-x64.tar.gz"
     dest="{{java_dir}}"
-    creates="{{java_dir}}/{{java_dist}}"
+  when: "java_exists is defined && java_exists.stdout.find('java') != 0"
 
 - name: setup JAVA_HOME
   lineinfile:

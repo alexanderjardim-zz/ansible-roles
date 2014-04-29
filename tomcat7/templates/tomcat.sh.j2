@@ -4,9 +4,6 @@ pid=`ps -fe | grep '{{tomcat_dir}}/{{tomcat_dist}}' | grep -v grep | tr -s ' ' |
 
 if [ -n "$pid" ]; then 
 	{{tomcat_dir}}/{{tomcat_dist}}/bin/catalina.sh stop 10 -force
-	{{tomcat_dir}}/{{tomcat_dist}}/bin/catalina.sh stop 10 -force
-	sleep 5
 fi
 
 {{tomcat_dir}}/{{tomcat_dist}}/bin/startup.sh
-sleep 20

@@ -1,14 +1,12 @@
 ---
 
-tomcat_dir: '/www/tomcat'
+#tomcat_dir: '/www/tomcat'
 
 tomcat_version: '7.0.53'
 
 tomcat_package: 'apache-tomcat-7.0.53.tar.gz'
 
 tomcat_dist: 'apache-tomcat-7.0.53'
-
-tomcat_context: '/www/tomcat/apache-tomcat-7.0.53/conf/Catalina/localhost'
 
 tomcat_log_level: 'FINE'
 
@@ -28,7 +26,7 @@ tomcat_redirect_port: 8443
 tomcat_connection_timeout: 20000
 
 tomcat_users: [
-  { name: 'tomcat', password: 'tomcat', roles: 'tomcat,manager-gui'}
+  { name: 'tomcat', password: 'tomcat', roles: 'tomcat,admin-gui'}
 ]
 
 #java_opts: ''

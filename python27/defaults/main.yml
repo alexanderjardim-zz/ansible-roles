@@ -1,0 +1,6 @@
+---
+
+download_dir: '~/Downloads'
+
+python_version: '2.7.6'
+python_dir: '/tmp/python27'

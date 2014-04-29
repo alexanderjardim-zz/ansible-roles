@@ -39,3 +39,4 @@
 
 - include: tomcat7.yml
   when: solr_container == 'tomcat7'
+  tags: tomcat

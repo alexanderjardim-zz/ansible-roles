@@ -3,7 +3,7 @@
 - name: creates solr context at Tomcat
   template:
     src="tomcat7/solr.xml.j2"
-    dest={{tomcat_context}}/solr.xml
+    dest={{tomcat_dir}}/{{tomcat_dist}}/conf/Catalina/localhost/solr.xml
   notify:
     - restart tomcat
 
