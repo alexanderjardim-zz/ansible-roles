@@ -5,6 +5,7 @@
     get_url
       url="https://www.python.org/ftp/python/{{python_version}}/Python-{{python_version}}.tgz"
       dest="{{download_dir}}"
+      sha256sum=99c6860b70977befa1590029fae092ddb18db1d69ae67e8b9385b66ed104ba58
   tags: download
 
 - name: ensures Python 2.7 dir exists
@@ -15,18 +16,18 @@
 - name: get ansible_ssh_user for local usage
   raw: "echo -n {{ansible_ssh_user}}"
   register: ssh_user
+  tags: unpack
 
 - name: ensures Python 2.7 source is at guest
   local_action: >
     command 
       scp "{{download_dir}}/Python-{{python_version}}.tgz" "{{ssh_user.stdout}}@{{ansible_ssh_host}}:{{python_dir}}/"
+  tags: unpack
 
 - name: unpack Python 2.7 at guest
   raw: "cd {{python_dir}}; tar zxf Python-{{python_version}}.tgz"
+  tags: unpack
 
 - name: finally install Python27
   raw: "cd {{python_dir}}/Python-{{python_version}}; ./configure --prefix={{python_dir}}; make; make install"
-
-- name: register ansible_python_interpreter
-  raw: "echo -n {{python_dir}}/bin/python"
-  register: ansible_python_interpreter
+  tags: unpack

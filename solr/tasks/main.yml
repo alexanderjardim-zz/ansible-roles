@@ -5,6 +5,7 @@
     get_url 
       url="https://archive.apache.org/dist/lucene/solr/{{solr_version}}/{{solr_package}}" 
       dest="{{download_dir}}/{{solr_package}}"
+  tags: download
 
 - name: unpack Solr to host
   local_action: >
@@ -12,6 +13,7 @@
       src="{{download_dir}}/{{solr_package}}"
       dest="{{download_dir}}/"
       creates="{{download_dir}}/{{solr_dist}}"
+  tags: unpack
 
 - name: ensures {{item}} directory exists
   file: path={{item}} state=directory

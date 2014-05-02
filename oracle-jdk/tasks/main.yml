@@ -3,26 +3,19 @@
   local_action: >
     command wget -N -P "{{download_dir}}" --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u51-b13/jdk-7u51-linux-x64.tar.gz
     creates="{{download_dir}}/jdk-7u51-linux-x64.tar.gz"
+    sha256sum=77367c3ef36e0930bf3089fb41824f4b8cf55dcc8f43cce0868f7687a474f55c
+  tags: download
 
 - name: "{{java_dir}} must exist"
   file: path={{java_dir}} state=directory
-
-- name: verifies if {{java_dir}}/{{java_dist}}/bin/java exists
-  command: 
-    chdir="{{java_dir}}/{{java_dist}}/bin/"
-    ls java
-  register: java_exists
-  ignore_errors: true
-
-- name: DEBUG - prints registered java_exists value
-  command: "echo {{java_exists.stdout.find('java')}}"
-  tags: debug
 
 - name: unpacks Jdk7
   unarchive: 
     src="{{download_dir}}/jdk-7u51-linux-x64.tar.gz"
     dest="{{java_dir}}"
-  when: "java_exists is defined && java_exists.stdout.find('java') != 0"
+    creates="{{java_dir}}/{{java_dist}}/bin/java"
+    force=no
+  tags: unpack
 
 - name: setup JAVA_HOME
   lineinfile:

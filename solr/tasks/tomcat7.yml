@@ -24,5 +24,6 @@
   copy: 
     src="{{download_dir}}/{{solr_dist}}/example/lib/ext/"
     dest="{{tomcat_dir}}/{{tomcat_dist}}/lib/"
+    force=no
   notify:
     - restart tomcat

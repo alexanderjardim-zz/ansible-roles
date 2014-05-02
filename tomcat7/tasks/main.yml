@@ -28,6 +28,7 @@
     dest="{{tomcat_dir}}"
     creates="{{tomcat_dir}}/{{tomcat_dist}}/bin/startup.sh"
   when: "tomcat_exists.stdout.find('startup') != 0"
+  tags: unpack
 
 - name: ensures Tomcat context config folder exists
   file:

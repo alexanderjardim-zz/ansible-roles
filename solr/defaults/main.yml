@@ -54,6 +54,8 @@ solr_commit_hard_max_docs: 1000
 
 solr_commit_hard_open_searcher: "true"
 
+solr_max_warming_searchers: 2
+
 #lock type can be native, single, simple, none
 solr_lock_type: native
 
