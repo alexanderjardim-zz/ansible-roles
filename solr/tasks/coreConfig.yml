@@ -14,7 +14,7 @@
     src="{{solr_local_home}}/{{item}}/conf/"
     dest="{{solr_dir}}/{{item}}/conf/"
     mode=0600
-    force=no
+    force=yes
   with_items: solr_core_names
 
 - name: ensures solrconfig.xml is generated based on {{solr_config_template_path}}

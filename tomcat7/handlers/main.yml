@@ -1,4 +1,4 @@
 ---
 
 - name: "restart tomcat"
-  command: "{{tomcat_dir}}/{{tomcat_dist}}/tomcat.sh"
+  command: "{{tomcat_dir}}/{{tomcat_version}}/tomcat.sh"

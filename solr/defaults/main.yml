@@ -120,4 +120,19 @@ solr_post_commit_wait: "true"
 #solr_post_commit_env: [
 #  {key: 'ENV1', value: 'VALUE_OF_ENV1'},
 #  {key: 'ENV2', value: 'VALUE_OF_ENV2'},
-#]
+
+#########
+# CACHE #
+#########
+
+solr_filter_cache_size: 512
+solr_filter_cache_intial_size: 512
+solr_filter_cache_auto_warm_count: 0
+
+solr_query_result_cache_size: 512
+solr_query_result_cache_intial_size: 512
+solr_query_result_cache_auto_warm_count: 0
+
+solr_document_cache_size: 512
+solr_document_cache_intial_size: 512
+solr_document_cache_auto_warm_count: 0

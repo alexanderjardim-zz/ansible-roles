@@ -1,29 +1,28 @@
 ---
 
+- name: ensures {{tomcat_dir}}/{{tomcat_version}}/conf/Catalina/localhost exists
+  file:
+    path="{{tomcat_dir}}/{{tomcat_version}}/conf/Catalina/localhost"
+    state=directory
+
 - name: creates solr context at Tomcat
   template:
     src="tomcat7/solr.xml.j2"
-    dest={{tomcat_dir}}/{{tomcat_dist}}/conf/Catalina/localhost/solr.xml
-  notify:
-    - restart tomcat
+    dest={{tomcat_dir}}/{{tomcat_version}}/conf/Catalina/localhost/solr.xml
 
-- name: ensures {{tomcat_dir}}/{{tomcat_dist}}/lib exists
+- name: ensures {{tomcat_dir}}/{{tomcat_version}}/lib exists
   file:
-    path="{{tomcat_dir}}/{{tomcat_dist}}/lib"
+    path="{{tomcat_dir}}/{{tomcat_version}}/lib"
     state=directory
     mode=0750
 
 - name: ensures Log4j.properties is present
   template:
     src="tomcat7/log4j.properties.j2"
-    dest="{{tomcat_dir}}/{{tomcat_dist}}/lib/log4j.properties"
-  notify:
-    - restart tomcat
+    dest="{{tomcat_dir}}/{{tomcat_version}}/lib/log4j.properties"
 
 - name: copy external dependencies to Tomcat lib dir
   copy: 
     src="{{download_dir}}/{{solr_dist}}/example/lib/ext/"
-    dest="{{tomcat_dir}}/{{tomcat_dist}}/lib/"
+    dest="{{tomcat_dir}}/{{tomcat_version}}/lib/"
     force=no
-  notify:
-    - restart tomcat

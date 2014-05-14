@@ -10,61 +10,44 @@
     path="{{tomcat_dir}}"
     state=directory
 
-- name: "checks if {{tomcat_dir}}/{{tomcat_dist}}/bin/startup.sh exists"
-  command:
-    chdir="{{tomcat_dir}}"
-    ls "{{tomcat_dist}}/bin/startup.sh"
-  register: tomcat_exists
-  ignore_errors: true
-
-- name: "DEBUG - prints {{tomcat_exists}} value"
-  command:
-    echo  "{{tomcat_exists.stdout}} {{tomcat_exists.stdout.find('startup')}}"
-  tags: debug
-
 - name: unpack Tomcat
   unarchive:
     src="{{download_dir}}/{{tomcat_package}}"
     dest="{{tomcat_dir}}"
-    creates="{{tomcat_dir}}/{{tomcat_dist}}/bin/startup.sh"
-  when: "tomcat_exists.stdout.find('startup') != 0"
+    creates="{{tomcat_dir}}/{{tomcat_version}}/bin/startup.sh"
   tags: unpack
 
 - name: ensures Tomcat context config folder exists
   file:
-    path="{{tomcat_dir}}/{{tomcat_dist}}/conf/Catalina/localhost"
+    path="{{tomcat_dir}}/{{tomcat_version}}/conf/Catalina/localhost"
     state=directory
 
 - name: configures server.xml
   template:
     src=server.xml.j2
-    dest="{{tomcat_dir}}/{{tomcat_dist}}/conf/server.xml"
+    dest="{{tomcat_dir}}/{{tomcat_version}}/conf/server.xml"
 
 - name: configures tomcat-users.xml
   template:
     src="tomcat-users.xml.j2"
-    dest="{{tomcat_dir}}/{{tomcat_dist}}/conf/tomcat-users.xml"
+    dest="{{tomcat_dir}}/{{tomcat_version}}/conf/tomcat-users.xml"
 
 - name: configures logging.properties
   template:
     src="logging.properties.j2"
-    dest="{{tomcat_dir}}/{{tomcat_dist}}/conf/logging.properties"
+    dest="{{tomcat_dir}}/{{tomcat_version}}/conf/logging.properties"
 
 - name: creates tomcat.sh
   template:
     src="tomcat.sh.j2"
-    dest="{{tomcat_dir}}/{{tomcat_dist}}/tomcat.sh"
+    dest="{{tomcat_dir}}/{{tomcat_version}}/tomcat.sh"
     mode=0700
-  notify:
-    - restart tomcat
 
 - name: configures the setenv.sh script
   template:
     src=setenv.sh.j2
-    dest="{{tomcat_dir}}/{{tomcat_dist}}/bin/setenv.sh"
+    dest="{{tomcat_dir}}/{{tomcat_version}}/bin/setenv.sh"
     mode=0755
-  notify:
-  - restart tomcat
 
 #- include: multiInstances.yml
 #  when: tomcat.instances is defined

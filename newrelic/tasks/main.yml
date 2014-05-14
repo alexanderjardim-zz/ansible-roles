@@ -11,6 +11,7 @@
     src="{{ download_dir}}/newrelic_agent{{newrelic_version}}.zip"
     dest="{{newrelic_dir}}/{{newrelic_version}}"
     creates="{{newrelic_dir}}/{{newrelic_version}}/newrelic.jar"
+  tags: unpack
 
 - name: moves New Relic content to its rightfull place
   shell:

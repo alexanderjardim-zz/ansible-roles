@@ -508,9 +508,9 @@
                and old cache.  
       -->
     <filterCache class="solr.FastLRUCache"
-                 size="${filterCache.size:512}"
-                 initialSize="${filterCache.initialSize:512}"
-                 autowarmCount="${filterCache.autowarmCount:0}"/>
+                 size="{{solr_filter_cache_size}}"
+                 initialSize="{{solr_filter_cache_intial_size}}"
+                 autowarmCount="{{solr_filter_cache_auto_warm_count}}"/>
 
     <!-- Query Result Cache
          
@@ -518,10 +518,9 @@
          (DocList) based on a query, a sort, and the range of documents requested.  
       -->
     <queryResultCache class="solr.LRUCache"
-                     size="${queryResultCache.size:512}"
-                     initialSize="${queryResultCache.initialSize:512}"
-                     autowarmCount="${queryResultCache.autowarmCount:0}"/>
-   
+                     size="{{solr_query_result_cache_size}}"
+                 initialSize="{{solr_query_result_cache_intial_size}}"
+                 autowarmCount="{{solr_query_result_cache_auto_warm_count}}"/>
     <!-- Document Cache
 
          Caches Lucene Document objects (the stored fields for each
@@ -529,9 +528,9 @@
          this cache will not be autowarmed.  
       -->
     <documentCache class="solr.LRUCache"
-                   size="${documentCache.size:512}"
-                   initialSize="${documentCache.initialSize:512}"
-                   autowarmCount="${documentcache.autowarmCount:0}"/>
+                   size="{{solr_document_cache_size}}"
+                 initialSize="{{solr_document_cache_intial_size}}"
+                 autowarmCount="{{solr_document_cache_auto_warm_count}}"/>
     
     <!-- Field Value Cache
          
